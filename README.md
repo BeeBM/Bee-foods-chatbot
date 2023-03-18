@@ -30,34 +30,42 @@ Overall, the chatbot allows customers to place orders for meals in a restaurant 
 - Clone the repository or download the ZIP file and extract it.
 - Open a terminal or command prompt and navigate to the root directory of the application.
 - Run npm install to install all the required dependencies.
-- Create a .env file in the root directory of the project and add the necessary environment variables such as PORT, MONGO_URL, SESSION_SECRET.
-- Run the command **'node app.js'** to start the server.
+- Create a .env file in the root directory of the project and add the necessary environment variables such as PORT, SESSION_SECRET.
+- Run the command **'node index.js'** to start the server.
 - Once the server is running, open a web browser and navigate to http://localhost:PORT (replace PORT with the actual port number specified in the .env file) to access the chatbot.
 - You can also customize the chatbot behavior and add new features by modifying the codebase.
 
 These steps assume that you have Node.js installed on your system. If not, you will need to install them before proceeding (Visit the official Node.js website at https://nodejs.org/). Additionally, you may need to modify these instructions depending on your specific environment and requirements.
 
-css
-Copy code
-code block for installation commands goes here
-
 ## **Usage**
-- Clone the repository by running the command git clone https://github.com/username/chatbot.git in your terminal.
-- Install Node.js and npm (Node Package Manager) if they are not already installed on your system.
-- Open the project directory in your terminal and run the command npm install to install the project dependencies.
-- Run the command **'node app.js'** to start the server.
-- OOnce the server is running, open a web browser and navigate to http://localhost:PORT (replace PORT with the actual port number specified in the .env file) to access the chatbot.
-- To interact with the chatbot, type your message in the input box at the bottom of the chat interface and press the "go" button to send.
-- The chatbot will respond with an appropriate message based on the message you sent.
+The chatbot begins by welcoming the customer and asking for their name. With the use of the express-session, the chatbot is capable of welcoming a previous customer with his name if he visits the chatbot again within a 24-hour period. With the name, the chatbot asks the customer to select from the following options:
+
+- Type 1 to Place an order
+- Type 99 to checkout order
+- Type 98 to see order history
+- Type 97 to see current order
+- Type 0 to cancel order
+
+The chatbot checks if the customer's selection is 1 which correspond to "foodbaskets" and then presents the different options for the customer to select from. 
+
+- 11 for Snacks
+- 12 for Swallows
+- 13 for African dishes
+- 14 for drinks
+
+If the customer selects an option, the chatbot checks what they selected and displays the menu for that option. The customer can then select the different items on the menu by entering the corresponding number. The chatbot then checks what item the customer selected and adds it to their order. If the item is invalid, the chatbot informs the customer and prompts them to enter a valid item.
+
+If the customer's selection is 99, the chatbot checks if an order has been placed, checks it out, and adds the order to the order history. Otherwise it alerts the customer that no order has been placed.
+
+If the customer's selection is 98, the chatbot returns the order history of the customer, if there is. Otherwise it alerts the customer that he has no order history.
+
+If the customer's selection is 97, the chatbot returns the current order of the customer, this will only apply if he has checked out. Otherwise it alerts the customer that he should place an order.
+
+If the customer's selection is 0, the chatbot cancels the current order of the customer, this will only apply if he has previously checked out an order. Otherwise it alerts the customer that he has no order to cancel.
+
+Overall, this code allows customers to order food from a chatbot by presenting a menu of food baskets to choose from and then allowing them to select items from the menu.
 
 Note that this chatbot is a basic implementation and can be improved by adding more conversational rules and integrating it with other services such as natural language processing (NLP) engines to improve its accuracy and effectiveness.
 
-css
-Copy code
-code block for usage commands or examples goes here
-
 ## **License**
-The license under which the project is distributed.
-
-Copy code
 MIT License
