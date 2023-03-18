@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bee Foods Chatbot</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+</head>
+<style>
+    /* ::-webkit-scrollbar {
+            width: 0;
+        } */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #EEEEEE;
+}
+
+body {
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    font-family: 'Poppins', sans-serif;
+}
+
+.chat-container {
+    width: 50%;
+    height: 80%;
+    margin: auto;
+    border: 1px solid #EEEEEE;
+    box-shadow: 0 0 10px rgba(157, 41, 41, 0.5);
+    border-radius: 20px;
+}
+
+#chat-area {
+    height: 80%;
+    overflow: auto;
+    padding: 0 20px;
+}
+
+#input-area {
+
+    height: 8%;
+    display: grid;
+    grid-template-columns: 85% 15%;
+    border-radius: 32px;
+    /* scroll-behavior: smooth; */
+
+}
+
+div.heading,
+h2 {
+    height: 10%;
+    text-align: center;
+    background-color: rgb(214, 54, 54);
+    color: rgb(255, 255, 255);
+    border-radius: 15px 15px 15px 15px;
+}
+
+input {
+    font-size: 15px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 16px;
+    padding-left: 16px;
+    border-style: hidden;
+}
+
+button {
+    /* background-color: #2F58CD; */
+    color: rgb(187, 85, 85);
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+    border-style: hidden;
+}
+
+button:focus {
+    outline: none;
+}
+
+button:hover {
+    background-color: rgb(224, 89, 89);
+    color: rgb(151, 94, 94);
+    transform: scale(1.1);
+}
+
+.left,
+.right {
+    font-size: 15px;
+    width: auto;
+    line-height: 1.1rem;
+    margin-bottom: 1px;
+    margin-top: 15px;
+    max-width: 80%;
+    padding: 14px;
+    clear: both;
+
+}
+
+.left {
+    background-color: rgb(216, 176, 176);
+    /* background-color: #D09CFA; */
+    color: #cd3a3a;
+    border-radius: 0 16px 16px 16px;
+}
+
+.right {
+    background-color: rgb(216, 176, 176);
+    color: rgb(170, 74, 74);
+    border-radius: 16px 16px 0 16px;
+    float: right;
+
+}
+
+@media only screen and (max-width: 768px) {
+    .container {
+        float: none;
+        margin: 50px auto;
+        height: 85%;
+        width: 90%;
+    }
+
+    .left,
+    .right {
+        font-size: 10px;
+        width: auto;
+        line-height: 1.1rem;
+        margin-bottom: 1px;
+        margin-top: 15px;
+        max-width: 50%;
+        padding: 14px;
+        clear: both;
+    }
+}
+</style>
+<body>
+
+    <div class="chat-container">
+        <div class="heading">
+            <h2>Bee Foods Chatbot</h2>
+        </div>
+        <div id="chat-area">
+
+        </div>
+
+        <div id="input-area">
+            <input type="text" id="chat-input" autocomplete="off" placeholder="type in your request...">
+            <button id="go" onclick="sendMessage();" ><i class="fa fa-paper-plane"></i></button>
+        </div>
+        
+    </div>
+    
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+
+    <script>
+        var socket = io();
+        let input = document.getElementById("chat-input");
+        let chats = document.getElementById("chat-area")
+
+        input.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                document.getElementById("go").click()                       
+            }
+        });
+
+        function sendMessage() {
+            if (input.value) {
+                socket.emit("user_input", input.value);
+                input.value = "";
+                input.focus();
+            }
+        }
+
+            document.getElementById("go").addEventListener("click", (e) => {
+            e.preventDefault();
+            if (input.value) {
+                socket.emit("user_input", input.value);
+                input.value = "";
+                input.focus();
+            }
+            
+        })
+
+        socket.on("chatbot_message", function(message) {
+            let chatbotReply = document.createElement("div");
+            chatbotReply.setAttribute("class", "left");
+            chatbotReply.innerHTML = message;
+            document.getElementById("chat-area").appendChild(chatbotReply);
+            chats.scrollTop = chats.scrollHeight;
+        })
+
+        socket.on("user_message", function(message) {
+            let userInput = document.createElement("div");
+            userInput.setAttribute("class", "right");
+            userInput.innerHTML = message;
+            document.getElementById("chat-area").appendChild(userInput);
+            chats.scrollTop = chats.scrollHeight;
+        })
+    </script>
+    
+</body>
+</html>
