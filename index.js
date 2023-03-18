@@ -129,8 +129,7 @@ io.on("connection", (socket) => {
               );
             } else {
               const orderHistory = sessionData.orderHistory.reduce(
-                (acc, curr) => `${acc}<br><hr>${curr}`
-              );
+                (acc, curr) => `${acc}<br><hr>${curr}`, "Here is your order history:<br>");
               io.to(sessionId).emit("chatbot_message", orderHistory);
             }
             break;
@@ -146,7 +145,7 @@ io.on("connection", (socket) => {
                 "Press 1 to place an order"
               );
             } else {
-              io.to(sessionId).emit("chatbot_message", order);
+              io.to(sessionId).emit("chatbot_message", `Your current order is:<br>${order}`);
             }
             break;
 
